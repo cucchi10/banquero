@@ -13,7 +13,7 @@ WHERE general.deleted = false;
 `;
 
 const getDescuentos = `
-SELECT general.*, entidad.name AS Entidad Bancaria, rubro.name as Rubro, tienda.name as Tienda
+SELECT general.*, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id

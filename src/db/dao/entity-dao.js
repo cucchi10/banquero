@@ -14,6 +14,22 @@ WHERE lower(name) LIKE concat('%',lower($1),'%')
 AND deleted = false;
 `;
 
+const getEntidadExacto = `
+SELECT * FROM entidad
+WHERE lower(name) LIKE lower($1)
+`;
+
+const restoreEntidad = `
+UPDATE entidad
+SET deleted = false
+WHERE id = $1
+`;
+
+const addEntidad = `
+INSERT INTO entidad (name)
+VALUES ($1);
+`;
+
 class EntitysDAO extends DAO {
 	constructor() {
 		super();
@@ -23,12 +39,24 @@ class EntitysDAO extends DAO {
 		return this.queryOnly(getEntities);
 	}
 
+	async getEntidadExacto(value) {
+		return this.query(getEntidadExacto, [value]);
+	}
+
 	async getEntitiesCommander() {
 		return this.queryOnly(getEntitiesCommander);
 	}
 
 	async getEntidad(value) {
-		return this.query(getEntidad, value);
+		return this.query(getEntidad, [value]);
+	}
+
+	async addEntidad(name) {
+		return this.query(addEntidad, [name]);
+	}
+
+	async restoreEntidad(id) {
+		return this.query(restoreEntidad, [id]);
 	}
 }
 

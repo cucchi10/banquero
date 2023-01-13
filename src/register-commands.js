@@ -14,7 +14,26 @@ async function registerCommands() {
 				.setDescription('Selecciona una opcion para ver la lista completa!')
 				.setRequired(true)
 				.setAutocomplete(false)
-				.addChoices({ value:'Entidades Bancarias', name:'Entidades Bancarias' }, { value:'Rubros', name:'Rubros' }, { value:'Tiendas', name:'Tiendas' }, { value:'Tabla Descuentos', name:'Tabla Descuentos' }));
+				.addChoices({ value:'Entidades Bancarias', name:'Entidades Bancarias' },
+					{ value:'Rubros', name:'Rubros' }, { value:'Tiendas', name:'Tiendas' }, { value:'Tabla Descuentos', name:'Tabla Descuentos' }));
+
+
+	const updateTables = new SlashCommandBuilder()
+		.setName('crear')
+		.setDescription('Cargar los descuentos Bancarios!')
+		.addStringOption(option =>
+			option
+				.setName('seleccion')
+				.setDescription('Selecciona una opcion para crear!')
+				.setRequired(true)
+				.setAutocomplete(false)
+				.addChoices({ value:'Entidades Bancarias', name:'Entidades Bancarias' },
+					{ value:'Rubros', name:'Rubros' }, { value:'Tiendas', name:'Tiendas' }))
+		.addStringOption(option =>
+			option
+				.setName('nombre')
+				.setDescription('Escribe un nombre!')
+				.setRequired(true));
 
 	const searchMonday = new SlashCommandBuilder()
 		.setName('lunes')
@@ -153,6 +172,7 @@ async function registerCommands() {
 	const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 
 	const commands = [
+		updateTables,
 		searchTables,
 		searchMonday,
 		searchTuesday,

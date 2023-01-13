@@ -1,56 +1,53 @@
 const { EntitysDAO } = require('../db/dao/entity-dao');
 const { CategorieDAO } = require('../db/dao/categorie-dao');
 const { StoreDAO } = require('../db/dao/store-dao');
-const { DescuentosDAO } = require('../db/dao/descuentos-dao');
 
-let entidadesSaved = null;
-let rubrosSaved = null;
-let tiendasSaved = null;
-let descuentosSaved = null;
+const { infoCommander } = require('../datos');
 
 const entities = new EntitysDAO();
 const rubros = new CategorieDAO();
 const tiendas = new StoreDAO();
-const descuentos = new DescuentosDAO();
+
+function deleteInfoCommander(type) {
+	if (type === 'entidad') {
+		infoCommander.entidades = null;
+	}
+	if (type === 'rubro') {
+		infoCommander.rubros = null;
+	}
+	if (type === 'tienda') {
+		infoCommander.tiendas = null;
+	}
+}
 
 async function getEntidades() {
 
-	if (!entidadesSaved) {
+	if (!infoCommander.entidades) {
 		const result = await entities.getEntitiesCommander();
-		entidadesSaved = result;
+		infoCommander.entidades = result;
 	}
 
-	return entidadesSaved;
+	return infoCommander.entidades;
 }
 
 async function getRubros() {
 
-	if (!rubrosSaved) {
+	if (!infoCommander.rubros) {
 		const result = await rubros.getCategoriesCommander();
-		rubrosSaved = result;
+		infoCommander.rubros = result;
 	}
 
-	return rubrosSaved;
+	return infoCommander.rubros;
 }
 
 async function getTiendas() {
 
-	if (!tiendasSaved) {
+	if (!infoCommander.tiendas) {
 		const result = await tiendas.getStoresCommander();
-		tiendasSaved = result;
+		infoCommander.tiendas = result;
 	}
 
-	return tiendasSaved;
-}
-
-async function getTablaDescuentos() {
-
-	if (!descuentosSaved) {
-		const result = await descuentos.getDescuentos();
-		descuentosSaved = result;
-	}
-
-	return descuentosSaved;
+	return infoCommander.tiendas;
 }
 
 
@@ -58,5 +55,5 @@ module.exports = {
 	getEntidades,
 	getRubros,
 	getTiendas,
-	getTablaDescuentos,
+	deleteInfoCommander,
 };

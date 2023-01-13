@@ -10,6 +10,7 @@ const { NoCommand } = require('./src/commands/no-command');
 
 const { SearchDiscountCommand } = require('./src/commands/search-descuento-command');
 const { ListTablesCommand } = require('./src/commands/list-tables-command');
+const { UpdateTablesCommand } = require('./src/commands/update-tables-command');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -17,7 +18,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const commandHandler =
 	new SearchDiscountCommand(
 		new ListTablesCommand(
-			new NoCommand(null)));
+			new UpdateTablesCommand(
+				new NoCommand(null))));
 
 // When the client is ready, run this code (only once)
 client.once('ready', async () => {
