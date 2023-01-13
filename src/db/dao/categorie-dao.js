@@ -1,7 +1,11 @@
 const { DAO } = require('./dao');
 
-const getCategoriesMaped = `
+const getCategoriesCommander = `
 SELECT CAST(id AS VARCHAR(255)) AS value, name FROM rubro ORDER BY name ASC;
+`;
+
+const getCategories = `
+SELECT id AS ID , name AS Nombre FROM rubro ORDER BY name ASC;
 `;
 
 const getRubro = `
@@ -16,7 +20,11 @@ class CategorieDAO extends DAO {
 	}
 
 	async getCategories() {
-		return this.queryOnly(getCategoriesMaped);
+		return this.queryOnly(getCategories);
+	}
+
+	async getCategoriesCommander() {
+		return this.queryOnly(getCategoriesCommander);
 	}
 
 	async getRubro(value) {

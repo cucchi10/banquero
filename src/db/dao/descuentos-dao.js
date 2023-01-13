@@ -3,8 +3,17 @@ const { CategorieDAO } = require('./categorie-dao');
 const { EntitysDAO } = require('./entity-dao');
 const { StoreDAO } = require('./store-dao');
 
-const getDescuentos = `
+const getDescuentosCommander = `
 SELECT general.*, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
+FROM general
+JOIN entidad ON general.entidad = entidad.id
+JOIN rubro ON general.rubro = rubro.id
+JOIN tienda ON general.tienda = tienda.id
+WHERE general.deleted = false;
+`;
+
+const getDescuentos = `
+SELECT general.*, entidad.name AS Entidad Bancaria, rubro.name as Rubro, tienda.name as Tienda
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -19,15 +28,15 @@ JOIN entidad ON general.entidad = entidad.id
 JOIN tienda ON general.tienda = tienda.id
 WHERE lower(dia) LIKE concat('%',lower($1),'%')
 AND general.entidad = $2
-AND general.tienda = $4
+AND general.tienda = $3
 AND general.deleted = false;
 `;
 
 const getDescuentosWithRubro = `
 SELECT general.*, entidad.name as entidad_name, rubro.name as rubro_name
+FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
-FROM general
 WHERE lower(dia) LIKE concat('%',lower($1),'%')
 AND general.entidad = $2
 AND general.rubro = $3
@@ -37,10 +46,10 @@ AND general.deleted = false;
 const getDescuentosWithRubroANDTienda = `
 SELECT general.*, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
 FROM general
-WHERE lower(dia) LIKE concat('%',lower($1),'%')
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
 JOIN tienda ON general.tienda = tienda.id
+WHERE lower(dia) LIKE concat('%',lower($1),'%')
 AND general.entidad = $2
 AND general.rubro = $3
 AND general.tienda = $4
@@ -59,6 +68,11 @@ class DescuentosDAO extends DAO {
 
 	async getDescuentos() {
 		const result = await this.queryOnly(getDescuentos);
+		return result;
+	}
+
+	async getDescuentosCommander() {
+		const result = await this.queryOnly(getDescuentosCommander);
 		return result;
 	}
 

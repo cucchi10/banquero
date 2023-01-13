@@ -16,7 +16,7 @@ const descuentos = new DescuentosDAO();
 async function getEntidades() {
 
 	if (!entidadesSaved) {
-		const result = await entities.getEntities();
+		const result = await entities.getEntitiesCommander();
 		entidadesSaved = result;
 	}
 
@@ -26,7 +26,7 @@ async function getEntidades() {
 async function getRubros() {
 
 	if (!rubrosSaved) {
-		const result = await rubros.getCategories();
+		const result = await rubros.getCategoriesCommander();
 		rubrosSaved = result;
 	}
 
@@ -36,7 +36,7 @@ async function getRubros() {
 async function getTiendas() {
 
 	if (!tiendasSaved) {
-		const result = await tiendas.getStores();
+		const result = await tiendas.getStoresCommander();
 		tiendasSaved = result;
 	}
 

@@ -1,19 +1,9 @@
 const { Command } = require('./command');
 const { getEntidades, getRubros, getTiendas, getTablaDescuentos } = require('../autocomplete/get-autocomplete-in-commands');
-
+const { buildTable } = require('../utils/table');
 class ListTablesCommand extends Command {
 	constructor(command) {
 		super(command);
-	}
-
-	buildTable(data) {
-		let table = '';
-		table += '| **' + Object.keys(data[0]).join(' | ') + '** |\n';
-		table += '|' + '-'.repeat((Object.keys(data[0]).join(' | ').length) * 1.25) + '|\n';
-		data.forEach(item => {
-			table += '| **' + Object.values(item).join(' | ') + '** |\n';
-		});
-		return table;
 	}
 
 	async handleInteraction(interaction) {
@@ -37,9 +27,8 @@ class ListTablesCommand extends Command {
 
 				if (!result || !result.length) throw new Error('No Hay Datos Que Mostrar');
 
-				const table = this.buildTable(result);
-
-				await Command.reply(interaction, table);
+				const table = buildTable(result);
+				await Command.reply(interaction, '```' + table + '```');
 			}
 			catch (error) {
 				Command.reply(interaction, error.message);

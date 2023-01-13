@@ -1,7 +1,11 @@
 const { DAO } = require('./dao');
 
-const getEntitiesMaped = `
+const getEntitiesCommander = `
 SELECT CAST(id AS VARCHAR(255)) AS value, name FROM entidad ORDER BY name ASC;
+`;
+
+const getEntities = `
+SELECT id AS ID, name AS Nombre FROM entidad ORDER BY name ASC;
 `;
 
 const getEntidad = `
@@ -16,7 +20,11 @@ class EntitysDAO extends DAO {
 	}
 
 	async getEntities() {
-		return this.queryOnly(getEntitiesMaped);
+		return this.queryOnly(getEntities);
+	}
+
+	async getEntitiesCommander() {
+		return this.queryOnly(getEntitiesCommander);
 	}
 
 	async getEntidad(value) {
