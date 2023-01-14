@@ -1,11 +1,17 @@
 const { DAO } = require('./dao');
 
 const getStoresCommander = `
-SELECT CAST(id AS VARCHAR(255)) AS value, name FROM tienda ORDER BY name ASC;
+SELECT CAST(id AS VARCHAR(255)) AS value, name 
+FROM tienda 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getStores = `
-SELECT id, name AS Nombre FROM tienda ORDER BY name ASC;
+SELECT id, name AS Nombre 
+FROM tienda 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getTienda = `
