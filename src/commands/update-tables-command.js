@@ -8,7 +8,7 @@ const { DescuentosDAO } = require('../db/dao/descuentos-dao');
 const { isNumber } = require('../utils/number');
 const { CheckPermissions } = require('../utils/permissions');
 
-const { infoList } = require('../datos');
+const { infoList, infoCommander } = require('../datos');
 
 class UpdateTablesCommand extends Command {
 	constructor(command) {
@@ -43,6 +43,7 @@ class UpdateTablesCommand extends Command {
 						const restaurarEntidad = await this.EntitysDAO.restoreEntidad(entidadExist[0].id);
 						if (!restaurarEntidad) throw new Error(`Error al restaurar **${name}** en **${input}**`);
 						infoList.entidades = null;
+						infoCommander.entidades = null;
 						message = `Se Restauro **${entidadExist[0].name}** en **${input}** con Exito`;
 					}
 					else {
@@ -51,6 +52,7 @@ class UpdateTablesCommand extends Command {
 						if (!crearEntidad || crearEntidad.length) throw new Error(`Error al crear **${name}** en **${input}**`);
 
 						infoList.entidades = null;
+						infoCommander.entidades = null;
 						message = `Se creo con exito **${name}** en **${input}**`;
 					}
 				}
@@ -66,6 +68,7 @@ class UpdateTablesCommand extends Command {
 						const restaurarRubro = await this.CategorieDAO.restoreRubro(rubroExist[0].id);
 						if (!restaurarRubro) throw new Error(`Error al restaurar **${name}** en **${input}**`);
 						infoList.rubros = null;
+						infoCommander.rubros = null;
 						message = `Se Restauro **${rubroExist[0].name}** en **${input}** con Exito`;
 					}
 					else {
@@ -74,6 +77,7 @@ class UpdateTablesCommand extends Command {
 						if (!crearRubro || crearRubro.length) throw new Error(`Error al crear **${name}** en **${input}**`);
 
 						infoList.rubros = null;
+						infoCommander.rubros = null;
 						message = `Se creo con exito **${name}** en **${input}**`;
 					}
 				}
@@ -89,6 +93,7 @@ class UpdateTablesCommand extends Command {
 						const restaurarTienda = await this.StoreDAO.restoreTienda(tiendaExist[0].id);
 						if (!restaurarTienda) throw new Error(`Error al restaurar **${name}** en **${input}**`);
 						infoList.tiendas = null;
+						infoCommander.tiendas = null;
 						message = `Se Restauro **${tiendaExist[0].name}** en **${input}** con Exito`;
 					}
 					else {
@@ -97,10 +102,12 @@ class UpdateTablesCommand extends Command {
 						if (!creartienda || creartienda.length) throw new Error(`Error al crear **${name}** en **${input}**`);
 
 						infoList.tiendas = null;
+						infoCommander.tiendas = null;
 						message = `Se creo con exito **${name}** en **${input}**`;
 					}
 				}
 				if (!message) throw new Error(`Error de Interacción en Creacion de **${name}** en **${input}**`);
+				infoList.tabla_descuentos = null;
 				await Command.reply(interaction, message);
 			}
 			catch (error) {

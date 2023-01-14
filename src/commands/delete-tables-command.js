@@ -8,7 +8,7 @@ const { DescuentosDAO } = require('../db/dao/descuentos-dao');
 const { isNumber } = require('../utils/number');
 const { CheckPermissions } = require('../utils/permissions');
 
-const { infoList } = require('../datos');
+const { infoList, infoCommander } = require('../datos');
 
 class DeleteTablesCommand extends Command {
 	constructor(command) {
@@ -48,6 +48,7 @@ class DeleteTablesCommand extends Command {
 						if (!eliminarEntidad || eliminarEntidad.length) throw new Error(`Error al Eliminar ${nameIsNumber ? 'ID' : 'nombre'} **${name}** de **${input}**`);
 
 						infoList.entidades = null;
+						infoCommander.entidades = null;
 
 						const eliminarVinculacion = await this.DescuentosDAO.deleteWithEntidad(entidadExist[0].id);
 
@@ -74,6 +75,7 @@ class DeleteTablesCommand extends Command {
 						if (!eliminarRubro || eliminarRubro.length) throw new Error(`Error al Eliminar ${nameIsNumber ? 'ID' : 'nombre'} **${name}** de **${input}**`);
 
 						infoList.rubros = null;
+						infoCommander.rubros = null;
 
 						const eliminarVinculacion = await this.DescuentosDAO.deleteWithRubro(rubroExist[0].id);
 
@@ -100,6 +102,7 @@ class DeleteTablesCommand extends Command {
 						if (!eliminarTienda || eliminarTienda.length) throw new Error(`Error al Eliminar ${nameIsNumber ? 'ID' : 'nombre'} **${name}** de **${input}**`);
 
 						infoList.rubros = null;
+						infoCommander.rubros = null;
 
 						const eliminarVinculacion = await this.DescuentosDAO.deleteWithTienda(tiendaExist[0].id);
 
@@ -112,6 +115,7 @@ class DeleteTablesCommand extends Command {
 					throw new Error('Aun no Definimos esto');
 				}
 				if (!message) throw new Error(`Error de Interacción en Creacion de **${name}** en **${input}**`);
+				infoList.tabla_descuentos = null;
 				await Command.reply(interaction, message);
 			}
 			catch (error) {
