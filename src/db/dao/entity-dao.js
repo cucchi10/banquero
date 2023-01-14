@@ -1,17 +1,28 @@
 const { DAO } = require('./dao');
 
 const getEntitiesCommander = `
-SELECT CAST(id AS VARCHAR(255)) AS value, name FROM entidad ORDER BY name ASC;
+SELECT CAST(id AS VARCHAR(255)) AS value, name 
+FROM entidad 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getEntities = `
-SELECT id AS ID, name AS Nombre FROM entidad ORDER BY name ASC;
+SELECT id, name AS Nombre 
+FROM entidad 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getEntidad = `
 SELECT * FROM entidad
 WHERE lower(name) LIKE concat('%',lower($1),'%')
 AND deleted = false;
+`;
+
+const getEntidadById = `
+SELECT * FROM entidad
+WHERE id = $1
 `;
 
 const getEntidadExacto = `
@@ -22,6 +33,12 @@ WHERE lower(name) LIKE lower($1)
 const restoreEntidad = `
 UPDATE entidad
 SET deleted = false
+WHERE id = $1
+`;
+
+const deleteEntidad = `
+UPDATE entidad
+SET deleted = true
 WHERE id = $1
 `;
 
@@ -39,16 +56,20 @@ class EntitysDAO extends DAO {
 		return this.queryOnly(getEntities);
 	}
 
-	async getEntidadExacto(value) {
-		return this.query(getEntidadExacto, [value]);
+	async getEntidadById(id) {
+		return this.query(getEntidadById, [id]);
+	}
+
+	async getEntidadExacto(name) {
+		return this.query(getEntidadExacto, [name]);
 	}
 
 	async getEntitiesCommander() {
 		return this.queryOnly(getEntitiesCommander);
 	}
 
-	async getEntidad(value) {
-		return this.query(getEntidad, [value]);
+	async getEntidad(name) {
+		return this.query(getEntidad, [name]);
 	}
 
 	async addEntidad(name) {
@@ -57,6 +78,10 @@ class EntitysDAO extends DAO {
 
 	async restoreEntidad(id) {
 		return this.query(restoreEntidad, [id]);
+	}
+
+	async deleteEntidad(id) {
+		return this.query(deleteEntidad, [id]);
 	}
 }
 

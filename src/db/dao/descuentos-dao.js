@@ -56,6 +56,22 @@ AND general.tienda = $4
 AND general.deleted = false;
 `;
 
+const deleteWithEntidad = `
+UPDATE general
+SET deleted = true
+WHERE entidad = $1
+`;
+const deleteWithRubro = `
+UPDATE general
+SET deleted = true
+WHERE rubro = $1
+`;
+const deleteWithTienda = `
+UPDATE general
+SET deleted = true
+WHERE tienda = $1
+`;
+
 
 class DescuentosDAO extends DAO {
 	constructor() {
@@ -64,6 +80,19 @@ class DescuentosDAO extends DAO {
 		this.CategorieDAO = new CategorieDAO();
 		this.StoreDAO = new StoreDAO();
 
+	}
+
+	async deleteWithEntidad(id) {
+		const result = await this.query(deleteWithEntidad, [id]);
+		return result;
+	}
+	async deleteWithRubro(id) {
+		const result = await this.query(deleteWithRubro, [id]);
+		return result;
+	}
+	async deleteWithTienda(id) {
+		const result = await this.query(deleteWithTienda, [id]);
+		return result;
 	}
 
 	async getDescuentos() {

@@ -1,11 +1,17 @@
 const { DAO } = require('./dao');
 
 const getCategoriesCommander = `
-SELECT CAST(id AS VARCHAR(255)) AS value, name FROM rubro ORDER BY name ASC;
+SELECT CAST(id AS VARCHAR(255)) AS value, name 
+FROM rubro 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getCategories = `
-SELECT id AS ID , name AS Nombre FROM rubro ORDER BY name ASC;
+SELECT id, name AS Nombre 
+FROM rubro 
+WHERE deleted = false
+ORDER BY name ASC;
 `;
 
 const getRubro = `
@@ -14,15 +20,25 @@ WHERE lower(name) LIKE concat('%',lower($1),'%')
 AND deleted = false;
 `;
 
+const getRubroById = `
+SELECT * FROM rubro
+WHERE id = $1
+`;
+
 const getRubroExacto = `
 SELECT * FROM rubro
 WHERE lower(name) LIKE lower($1)
-AND deleted = false;
 `;
 
 const restoreRubro = `
 UPDATE rubro
 SET deleted = false
+WHERE id = $1
+`;
+
+const deleteRubro = `
+UPDATE rubro
+SET deleted = true
 WHERE id = $1
 `;
 
@@ -44,12 +60,16 @@ class CategorieDAO extends DAO {
 		return this.queryOnly(getCategoriesCommander);
 	}
 
-	async getRubro(value) {
-		return this.query(getRubro, [value]);
+	async getRubro(name) {
+		return this.query(getRubro, [name]);
 	}
 
-	async getRubroExacto(value) {
-		return this.query(getRubroExacto, [value]);
+	async getRubroById(id) {
+		return this.query(getRubroById, [id]);
+	}
+
+	async getRubroExacto(name) {
+		return this.query(getRubroExacto, [name]);
 	}
 
 	async addRubro(name) {
@@ -58,6 +78,10 @@ class CategorieDAO extends DAO {
 
 	async restoreRubro(id) {
 		return this.query(restoreRubro, [id]);
+	}
+
+	async deleteRubro(id) {
+		return this.query(deleteRubro, [id]);
 	}
 
 }

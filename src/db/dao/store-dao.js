@@ -5,7 +5,7 @@ SELECT CAST(id AS VARCHAR(255)) AS value, name FROM tienda ORDER BY name ASC;
 `;
 
 const getStores = `
-SELECT id AS ID, name AS Nombre FROM tienda ORDER BY name ASC;
+SELECT id, name AS Nombre FROM tienda ORDER BY name ASC;
 `;
 
 const getTienda = `
@@ -14,13 +14,24 @@ WHERE lower(name) LIKE concat('%',lower($1),'%')
 AND deleted = false;
 `;
 
+const getTiendaById = `
+SELECT * FROM tienda
+WHERE id = $1
+`;
+
 const getTiendaExacto = `
 SELECT * FROM tienda
 WHERE lower(name) LIKE lower($1)
-AND deleted = false;
 `;
 
+
 const restoreTienda = `
+UPDATE tienda
+SET deleted = false
+WHERE id = $1
+`;
+
+const deleteTienda = `
 UPDATE tienda
 SET deleted = false
 WHERE id = $1
@@ -40,16 +51,20 @@ class StoreDAO extends DAO {
 		return this.queryOnly(getStores);
 	}
 
-	async getTiendaExacto(value) {
-		return this.query(getTiendaExacto, [value]);
+	async getTiendaById(id) {
+		return this.query(getTiendaById, [id]);
+	}
+
+	async getTiendaExacto(name) {
+		return this.query(getTiendaExacto, [name]);
 	}
 
 	async getStoresCommander() {
 		return this.queryOnly(getStoresCommander);
 	}
 
-	async getTienda(value) {
-		return this.query(getTienda, [value]);
+	async getTienda(name) {
+		return this.query(getTienda, [name]);
 	}
 
 	async addTienda(name) {
@@ -58,6 +73,10 @@ class StoreDAO extends DAO {
 
 	async restoreTienda(id) {
 		return this.query(restoreTienda, [id]);
+	}
+
+	async deleteTienda(id) {
+		return this.query(deleteTienda, [id]);
 	}
 }
 
