@@ -1,5 +1,4 @@
-const { getEntidades, getRubros, getTiendas } = require('./get-autocomplete-in-commands');
-
+const { getEntidades, getRubros, getTiendas, getWeek } = require('./get-autocomplete-in-commands');
 
 async function autocompleteResponse(interaction) {
 
@@ -31,6 +30,16 @@ async function autocompleteResponse(interaction) {
 
 		return interaction.respond(filtered.slice(0, 25));
 	}
+
+	if (focusedOption.name === 'dia') {
+
+		const dias = await getWeek();
+		if (!focusedOption.value || !focusedOption.value === ' ') return interaction.respond(dias.slice(0, 25));
+		const filtered = dias.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase()));
+
+		return interaction.respond(filtered.slice(0, 25));
+	}
+
 }
 
 module.exports = {

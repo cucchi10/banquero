@@ -2,7 +2,7 @@ const { EntitysDAO } = require('../db/dao/entity-dao');
 const { CategorieDAO } = require('../db/dao/categorie-dao');
 const { StoreDAO } = require('../db/dao/store-dao');
 
-const { infoCommander } = require('../datos');
+const { infoCommander, week, generateCombinations, diasSemana } = require('../datos');
 
 const entities = new EntitysDAO();
 const rubros = new CategorieDAO();
@@ -50,10 +50,17 @@ async function getTiendas() {
 	return infoCommander.tiendas;
 }
 
+async function getWeek() {
+	if (!week.length) {
+		await generateCombinations(diasSemana);
+	}
+	return week;
+}
 
 module.exports = {
 	getEntidades,
 	getRubros,
 	getTiendas,
 	deleteInfoCommander,
+	getWeek,
 };

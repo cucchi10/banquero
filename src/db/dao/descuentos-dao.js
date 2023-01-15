@@ -255,38 +255,46 @@ class DescuentosDAO extends DAO {
 		return null;
 	}
 
+	async getIdsVinculados({ entidad, entidadIsNumber, rubro, rubroIsNumber, tienda, tiendaIsNumber }) {
+		let entidadValue = entidad;
+		let rubrodValue = rubro;
+		let tiendaValue = tienda;
+
+		if (entidadValue && entidadValue !== ' ') {
+			if (!entidadIsNumber) {
+				const result = await this.EntitysDAO.getEntidad(entidadValue);
+				if (!result || !result.length) throw new Error(`No Existe Entidad con nombre parecido a ${entidadValue}`);
+				entidadValue = result[0].id;
+			}
+		}
+
+		if (rubrodValue && rubrodValue !== ' ') {
+			if (!rubroIsNumber) {
+				const result = await this.CategorieDAO.getRubro(rubrodValue);
+				if (!result || !result.length) throw new Error(`No Existe Rubro con nombre parecido a ${rubrodValue}`);
+				rubrodValue = result[0].id;
+			}
+		}
+
+		if (tiendaValue && tiendaValue !== ' ') {
+			if (!tiendaIsNumber) {
+				const result = await this.StoreDAO.getTienda(tiendaValue);
+				if (!result || !result.length) throw new Error(`No Existe Tienda con nombre parecido a ${tiendaValue}`);
+				tiendaValue = result[0].id;
+			}
+		}
+
+		return { entidadValue, rubrodValue, tiendaValue };
+	}
+
 	async getDescuentosInteraction({ dia, entidad, entidadIsNumber, rubro, rubroIsNumber, tienda, tiendaIsNumber }) {
 		try {
 			if (!dia) {
 				throw new Error('Debes enviar un Día');
 			}
-			let entidadValue = entidad;
-			let rubrodValue = rubro;
-			let tiendaValue = tienda;
 
-			if (entidadValue && entidadValue !== ' ') {
-				if (!entidadIsNumber) {
-					const result = await this.EntitysDAO.getEntidad(entidadValue);
-					if (!result || !result.length) throw new Error(`No Existe Entidad con nombre parecido a ${entidadValue}`);
-					entidadValue = result[0].id;
-				}
-			}
-
-			if (rubrodValue && rubrodValue !== ' ') {
-				if (!rubroIsNumber) {
-					const result = await this.CategorieDAO.getRubro(rubrodValue);
-					if (!result || !result.length) throw new Error(`No Existe Rubro con nombre parecido a ${rubrodValue}`);
-					rubrodValue = result[0].id;
-				}
-			}
-
-			if (tiendaValue && tiendaValue !== ' ') {
-				if (!tiendaIsNumber) {
-					const result = await this.StoreDAO.getTienda(tiendaValue);
-					if (!result || !result.length) throw new Error(`No Existe Tienda con nombre parecido a ${tiendaValue}`);
-					tiendaValue = result[0].id;
-				}
-			}
+			const { entidadValue, rubrodValue, tiendaValue } = await this.getIdsVinculados({ entidad, entidadIsNumber, rubro,
+				rubroIsNumber, tienda, tiendaIsNumber });
 
 			return this.handleDescuentosOptions({ dia, entidad:entidadValue, rubro:rubrodValue, tienda: tiendaValue });
 		}

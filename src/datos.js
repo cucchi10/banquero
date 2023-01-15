@@ -13,8 +13,42 @@ const infoList = {
 	tabla_descuentos: null,
 };
 
+const week = [];
+
+async function generateCombinations(days, currentCombination = '', index = 0, result = []) {
+	if (index === days.length) {
+		result.push({ name: currentCombination.length ? currentCombination : 'Todos los Dias', value: (result.length).toString() });
+		return;
+	}
+
+	await generateCombinations(days, currentCombination, index + 1, result);
+	await generateCombinations(days, currentCombination.length ? currentCombination + ', ' + days[index]
+		: currentCombination + days[index], index + 1, result);
+	week.length = 0;
+	week.push(...result);
+}
+
+function deleteinfoList(type) {
+	if (type === 'entidad') {
+		infoList.entidades = null;
+	}
+	if (type === 'rubro') {
+		infoList.rubros = null;
+	}
+	if (type === 'tienda') {
+		infoList.tiendas = null;
+	}
+	if (type === 'tabla_descuento') {
+		infoList.tabla_descuentos = null;
+	}
+}
+
+
 module.exports = {
 	diasSemana,
 	infoCommander,
 	infoList,
+	week,
+	generateCombinations,
+	deleteinfoList,
 };

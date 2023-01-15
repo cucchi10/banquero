@@ -12,6 +12,9 @@ const { SearchDiscountCommand } = require('./src/commands/search-descuento-comma
 const { ListTablesCommand } = require('./src/commands/list-tables-command');
 const { UpdateTablesCommand } = require('./src/commands/update-tables-command');
 const { DeleteTablesCommand } = require('./src/commands/delete-tables-command');
+const { CreateDiscountCommand } = require('./src/commands/create-descuento-command');
+
+const { diasSemana, generateCombinations } = require('./src/datos');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -21,12 +24,15 @@ const commandHandler =
 		new ListTablesCommand(
 			new UpdateTablesCommand(
 				new DeleteTablesCommand(
-					new NoCommand(null)))));
+					new CreateDiscountCommand(
+						new NoCommand(null))))));
 
 // When the client is ready, run this code (only once)
 client.once('ready', async () => {
 	console.log('Ready!');
+	await generateCombinations(diasSemana);
 	await registerCommands();
+
 });
 
 client.on('interactionCreate', async interaction => {
