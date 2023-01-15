@@ -58,7 +58,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -77,7 +77,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -96,7 +96,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -115,7 +115,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -134,7 +134,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -153,7 +153,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')
@@ -172,7 +172,7 @@ async function registerCommands() {
 		.addStringOption(option =>
 			option.setName('entidad')
 				.setDescription('Nombre de la entidad de la que queres ver descuentos!')
-				.setRequired(true)
+				.setRequired(false)
 				.setAutocomplete(true))
 		.addStringOption(option =>
 			option.setName('rubro')

@@ -19,6 +19,85 @@ class UpdateTablesCommand extends Command {
 		this.StoreDAO = new StoreDAO();
 	}
 
+	async handleCreateInteraction(input, name) {
+		if (input === 'Entidades Bancarias') {
+			const entidadExist = await this.EntitysDAO.getEntidadExacto(name);
+			if (!entidadExist) {
+				throw new Error(`Error al Buscar ${name} en ${input}`);
+			}
+			else if (entidadExist && entidadExist.length && !entidadExist[0].deleted) {
+				throw new Error(`Ya existe **${entidadExist[0].name}** en **${input}**`);
+			}
+			else if (entidadExist && entidadExist.length && entidadExist[0].deleted) {
+				const restaurarEntidad = await this.EntitysDAO.restoreEntidad(entidadExist[0].id);
+				if (!restaurarEntidad) throw new Error(`Error al restaurar **${name}** en **${input}**`);
+				infoList.entidades = null;
+				infoCommander.entidades = null;
+				return `Se Restauro **${entidadExist[0].name}** en **${input}** con Exito`;
+			}
+			else {
+				const crearEntidad = await this.EntitysDAO.addEntidad(name);
+
+				if (!crearEntidad || crearEntidad.length) throw new Error(`Error al crear **${name}** en **${input}**`);
+
+				infoList.entidades = null;
+				infoCommander.entidades = null;
+				return `Se creo con exito **${name}** en **${input}**`;
+			}
+		}
+		else if (input === 'Rubros') {
+			const rubroExist = await this.CategorieDAO.getRubroExacto(name);
+			if (!rubroExist) {
+				throw new Error(`Error al Buscar ${name} en ${input}`);
+			}
+			else if (rubroExist && rubroExist.length && !rubroExist[0].deleted) {
+				throw new Error(`Ya existe **${rubroExist[0].name}** en **${input}**`);
+			}
+			else if (rubroExist && rubroExist.length && rubroExist[0].deleted) {
+				const restaurarRubro = await this.CategorieDAO.restoreRubro(rubroExist[0].id);
+				if (!restaurarRubro) throw new Error(`Error al restaurar **${name}** en **${input}**`);
+				infoList.rubros = null;
+				infoCommander.rubros = null;
+				return `Se Restauro **${rubroExist[0].name}** en **${input}** con Exito`;
+			}
+			else {
+				const crearRubro = await this.CategorieDAO.addRubro(name);
+
+				if (!crearRubro || crearRubro.length) throw new Error(`Error al crear **${name}** en **${input}**`);
+
+				infoList.rubros = null;
+				infoCommander.rubros = null;
+				return `Se creo con exito **${name}** en **${input}**`;
+			}
+		}
+		else if (input === 'Tiendas') {
+			const tiendaExist = await this.StoreDAO.getTiendaExacto(name);
+			if (!tiendaExist) {
+				throw new Error(`Error al Buscar ${name} en ${input}`);
+			}
+			else if (tiendaExist && tiendaExist.length && !tiendaExist[0].deleted) {
+				throw new Error(`Ya existe **${tiendaExist[0].name}** en **${input}**`);
+			}
+			else if (tiendaExist && tiendaExist.length && tiendaExist[0].deleted) {
+				const restaurarTienda = await this.StoreDAO.restoreTienda(tiendaExist[0].id);
+				if (!restaurarTienda) throw new Error(`Error al restaurar **${name}** en **${input}**`);
+				infoList.tiendas = null;
+				infoCommander.tiendas = null;
+				return `Se Restauro **${tiendaExist[0].name}** en **${input}** con Exito`;
+			}
+			else {
+				const creartienda = await this.StoreDAO.addTienda(name);
+
+				if (!creartienda || creartienda.length) throw new Error(`Error al crear **${name}** en **${input}**`);
+
+				infoList.tiendas = null;
+				infoCommander.tiendas = null;
+				return `Se creo con exito **${name}** en **${input}**`;
+			}
+		}
+		return null;
+	}
+
 	async handleInteraction(interaction) {
 		if (interaction.commandName === 'crear') {
 			try {
@@ -30,82 +109,7 @@ class UpdateTablesCommand extends Command {
 				const name = interaction.options.getString('nombre');
 				const nameIsNumber = isNumber(name);
 				if (nameIsNumber) throw new Error(`El Nombre de ${input} no puede ser solo numeros`);
-				let message = null;
-				if (input === 'Entidades Bancarias') {
-					const entidadExist = await this.EntitysDAO.getEntidadExacto(name);
-					if (!entidadExist) {
-						throw new Error(`Error al Buscar ${name} en ${input}`);
-					}
-					else if (entidadExist && entidadExist.length && !entidadExist[0].deleted) {
-						throw new Error(`Ya existe **${entidadExist[0].name}** en **${input}**`);
-					}
-					else if (entidadExist && entidadExist.length && entidadExist[0].deleted) {
-						const restaurarEntidad = await this.EntitysDAO.restoreEntidad(entidadExist[0].id);
-						if (!restaurarEntidad) throw new Error(`Error al restaurar **${name}** en **${input}**`);
-						infoList.entidades = null;
-						infoCommander.entidades = null;
-						message = `Se Restauro **${entidadExist[0].name}** en **${input}** con Exito`;
-					}
-					else {
-						const crearEntidad = await this.EntitysDAO.addEntidad(name);
-
-						if (!crearEntidad || crearEntidad.length) throw new Error(`Error al crear **${name}** en **${input}**`);
-
-						infoList.entidades = null;
-						infoCommander.entidades = null;
-						message = `Se creo con exito **${name}** en **${input}**`;
-					}
-				}
-				else if (input === 'Rubros') {
-					const rubroExist = await this.CategorieDAO.getRubroExacto(name);
-					if (!rubroExist) {
-						throw new Error(`Error al Buscar ${name} en ${input}`);
-					}
-					else if (rubroExist && rubroExist.length && !rubroExist[0].deleted) {
-						throw new Error(`Ya existe **${rubroExist[0].name}** en **${input}**`);
-					}
-					else if (rubroExist && rubroExist.length && rubroExist[0].deleted) {
-						const restaurarRubro = await this.CategorieDAO.restoreRubro(rubroExist[0].id);
-						if (!restaurarRubro) throw new Error(`Error al restaurar **${name}** en **${input}**`);
-						infoList.rubros = null;
-						infoCommander.rubros = null;
-						message = `Se Restauro **${rubroExist[0].name}** en **${input}** con Exito`;
-					}
-					else {
-						const crearRubro = await this.CategorieDAO.addRubro(name);
-
-						if (!crearRubro || crearRubro.length) throw new Error(`Error al crear **${name}** en **${input}**`);
-
-						infoList.rubros = null;
-						infoCommander.rubros = null;
-						message = `Se creo con exito **${name}** en **${input}**`;
-					}
-				}
-				else if (input === 'Tiendas') {
-					const tiendaExist = await this.StoreDAO.getTiendaExacto(name);
-					if (!tiendaExist) {
-						throw new Error(`Error al Buscar ${name} en ${input}`);
-					}
-					else if (tiendaExist && tiendaExist.length && !tiendaExist[0].deleted) {
-						throw new Error(`Ya existe **${tiendaExist[0].name}** en **${input}**`);
-					}
-					else if (tiendaExist && tiendaExist.length && tiendaExist[0].deleted) {
-						const restaurarTienda = await this.StoreDAO.restoreTienda(tiendaExist[0].id);
-						if (!restaurarTienda) throw new Error(`Error al restaurar **${name}** en **${input}**`);
-						infoList.tiendas = null;
-						infoCommander.tiendas = null;
-						message = `Se Restauro **${tiendaExist[0].name}** en **${input}** con Exito`;
-					}
-					else {
-						const creartienda = await this.StoreDAO.addTienda(name);
-
-						if (!creartienda || creartienda.length) throw new Error(`Error al crear **${name}** en **${input}**`);
-
-						infoList.tiendas = null;
-						infoCommander.tiendas = null;
-						message = `Se creo con exito **${name}** en **${input}**`;
-					}
-				}
+				const message = await this.handleCreateInteraction(input, name);
 				if (!message) throw new Error(`Error de Interacción en Creacion de **${name}** en **${input}**`);
 				infoList.tabla_descuentos = null;
 				await Command.reply(interaction, message);
