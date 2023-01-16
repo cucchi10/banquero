@@ -24,7 +24,7 @@ class SearchDiscountCommand extends Command {
 					rubro : rubroInput, rubroIsNumber: rubroIsNumber, tienda: tiendaInput, tiendaIsNumber:tiendaIsNumber });
 
 				if (!descuentos || !descuentos.length) {
-					throw new Error('No Hay Descuentos');
+					throw new Error('No hay descuentos');
 				}
 				await Command.reply(interaction, descuentos);
 			}

@@ -31,9 +31,9 @@ class CreateDiscountCommand extends Command {
 			}).join(', ');
 		}
 		else {
-			const inputExist = week[inputIsNumber];
-			if (!inputExist) throw new Error(`${inputIsNumber} No es una Opción Valida, Seleccione una opción usando el autocomplete o escriba el o los dias de la semana, separados por coma`);
-			return inputExist.name;
+			const inputExist = week[input];
+			if (!inputExist) throw new Error(`${inputExist}, no es una opción valida, seleccione una opción usando el autocomplete o escriba el o los dias de la semana, separados por coma`);
+			return inputExist.name === 'Todos los Dias' ? 'lunes, martes, miercoles, jueves, viernes, sabado, domingo' : inputExist.name;
 		}
 	}
 
@@ -48,12 +48,12 @@ class CreateDiscountCommand extends Command {
 				let desde = null;
 				let hasta = null;
 				if (desdeInput) {
-					if (!isDate(desdeInput)) throw new Error(`No tiene un formato valido el dato ${desdeInput}, Formatos Validos: DD/MM/YY, DD/MM/YYYY, DD-MM-YY o DD-MM-YYYY`);
+					if (!isDate(desdeInput)) throw new Error(`No tiene un formato valido el dato ${desdeInput}, formatos validos: DD/MM/YY, DD/MM/YYYY, DD-MM-YY o DD-MM-YYYY`);
 					desde = formatDate(desdeInput).toSQLDate();
 					if (!desde) throw new Error(`Error al convertir ${desdeInput} a formato fecha SQL`);
 				}
 				if (hastaInput) {
-					if (!isDate(hastaInput)) throw new Error(`No tiene un formato valido el dato ${hastaInput}, Formatos Validos: DD/MM/YY, DD/MM/YYYY, DD-MM-YY o DD-MM-YYYY`);
+					if (!isDate(hastaInput)) throw new Error(`No tiene un formato valido el dato ${hastaInput}, formatos validos: DD/MM/YY, DD/MM/YYYY, DD-MM-YY o DD-MM-YYYY`);
 					hasta = formatDate(hastaInput).toSQLDate();
 					if (!hasta) throw new Error(`Error al convertir ${hastaInput} a formato fecha SQL`);
 				}
@@ -82,6 +82,11 @@ class CreateDiscountCommand extends Command {
 				if (descuentoInput) {
 					descuento = descuentoInput;
 				}
+				const consumo_optimoInput = interaction.options.getString('consumo_optimo');
+				let consumo_optimo = null;
+				if (consumo_optimoInput) {
+					consumo_optimo = consumo_optimoInput;
+				}
 				const tope_descuentoInput = interaction.options.getString('tope_descuento');
 				let tope_descuento = null;
 				if (tope_descuentoInput) {
@@ -99,13 +104,13 @@ class CreateDiscountCommand extends Command {
 				}
 
 
-				const result = await this.DescuentosDAO.createOurUpdateDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
+				const result = await this.DescuentosDAO.createOurUpdateDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento, consumo_optimo,
 					tope_descuento, detalle, dia_reintegro });
 
 				if (!result || !result.length) {
-					throw new Error('No Hay Descuentos');
+					throw new Error('Algo salio mal, intente nuevamente mas tarde');
 				}
-				await Command.reply(interaction, 'Se Cargo con Exito el Descuento');
+				await Command.reply(interaction, result);
 			}
 			catch (error) {
 				Command.reply(interaction, error.message);

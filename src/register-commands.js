@@ -40,6 +40,11 @@ async function registerCommands() {
 				.setRequired(false))
 		.addStringOption(option =>
 			option
+				.setName('consumo_optimo')
+				.setDescription('Tope descuento que generara!')
+				.setRequired(false))
+		.addStringOption(option =>
+			option
 				.setName('detalle')
 				.setDescription('Detalle a tener en cuenta, algun dato que pueda aportar interes!')
 				.setRequired(false))

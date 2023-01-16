@@ -24,7 +24,7 @@ class UpdateTablesCommand extends Command {
 		if (input === 'Entidades Bancarias') {
 			const entidadExist = await this.EntitysDAO.getEntidadExacto(name);
 			if (!entidadExist) {
-				throw new Error(`Error al Buscar ${name} en ${input}`);
+				throw new Error(`Error al buscar ${name} en ${input}`);
 			}
 			else if (entidadExist && entidadExist.length && !entidadExist[0].deleted) {
 				throw new Error(`Ya existe **${entidadExist[0].name}** en **${input}**`);
@@ -34,7 +34,7 @@ class UpdateTablesCommand extends Command {
 				if (!restaurarEntidad) throw new Error(`Error al restaurar **${name}** en **${input}**`);
 				deleteinfoList('entidad');
 				deleteInfoCommander('entidad');
-				return `Se Restauro **${entidadExist[0].name}** en **${input}** con Exito`;
+				return `Se restauro **${entidadExist[0].name}** en **${input}** con Exito`;
 			}
 			else {
 				const crearEntidad = await this.EntitysDAO.addEntidad(name);
@@ -49,7 +49,7 @@ class UpdateTablesCommand extends Command {
 		else if (input === 'Rubros') {
 			const rubroExist = await this.CategorieDAO.getRubroExacto(name);
 			if (!rubroExist) {
-				throw new Error(`Error al Buscar ${name} en ${input}`);
+				throw new Error(`Error al buscar ${name} en ${input}`);
 			}
 			else if (rubroExist && rubroExist.length && !rubroExist[0].deleted) {
 				throw new Error(`Ya existe **${rubroExist[0].name}** en **${input}**`);
@@ -59,7 +59,7 @@ class UpdateTablesCommand extends Command {
 				if (!restaurarRubro) throw new Error(`Error al restaurar **${name}** en **${input}**`);
 				deleteinfoList('rubro');
 				deleteInfoCommander('rubro');
-				return `Se Restauro **${rubroExist[0].name}** en **${input}** con Exito`;
+				return `Se restauro **${rubroExist[0].name}** en **${input}** con exito`;
 			}
 			else {
 				const crearRubro = await this.CategorieDAO.addRubro(name);
@@ -75,7 +75,7 @@ class UpdateTablesCommand extends Command {
 		else if (input === 'Tiendas') {
 			const tiendaExist = await this.StoreDAO.getTiendaExacto(name);
 			if (!tiendaExist) {
-				throw new Error(`Error al Buscar ${name} en ${input}`);
+				throw new Error(`Error al buscar ${name} en ${input}`);
 			}
 			else if (tiendaExist && tiendaExist.length && !tiendaExist[0].deleted) {
 				throw new Error(`Ya existe **${tiendaExist[0].name}** en **${input}**`);
@@ -86,7 +86,7 @@ class UpdateTablesCommand extends Command {
 				deleteinfoList('tienda');
 				deleteInfoCommander('tienda');
 
-				return `Se Restauro **${tiendaExist[0].name}** en **${input}** con Exito`;
+				return `Se restauro **${tiendaExist[0].name}** en **${input}** con exito`;
 			}
 			else {
 				const creartienda = await this.StoreDAO.addTienda(name);
@@ -112,9 +112,9 @@ class UpdateTablesCommand extends Command {
 				const input = interaction.options.getString('seleccion');
 				const name = interaction.options.getString('nombre');
 				const nameIsNumber = isNumber(name);
-				if (nameIsNumber) throw new Error(`El Nombre de ${input} no puede ser solo numeros`);
+				if (nameIsNumber) throw new Error(`El nombre de ${input} no puede ser solo numeros`);
 				const message = await this.handleCreateInteraction(input, name);
-				if (!message) throw new Error(`Error de Interacción en Creacion de **${name}** en **${input}**`);
+				if (!message) throw new Error(`Error de interacción en creacion de **${name}** en **${input}**`);
 
 				deleteinfoList('tabla_descuento');
 

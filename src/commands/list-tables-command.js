@@ -49,7 +49,7 @@ class ListTablesCommand extends Command {
 					result = infoList.tabla_descuentos;
 				}
 
-				if (!result || !result.length) throw new Error('No Hay Datos Que Mostrar');
+				if (!result || !result.length) throw new Error('No hay datos Que mostrar');
 
 				const table = buildTable(result);
 				await Command.reply(interaction, '```' + table + '```');
