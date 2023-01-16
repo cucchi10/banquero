@@ -303,6 +303,12 @@ class DescuentosDAO extends DAO {
 		}
 	}
 
+	async createOurUpdateDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
+		tope_descuento, detalle, dia_reintegro }) {
+		console.log({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
+			tope_descuento, detalle, dia_reintegro });
+	}
+
 }
 
 exports.DescuentosDAO = DescuentosDAO;

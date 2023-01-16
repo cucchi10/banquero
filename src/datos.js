@@ -24,8 +24,9 @@ async function generateCombinations(days, currentCombination = '', index = 0, re
 	await generateCombinations(days, currentCombination, index + 1, result);
 	await generateCombinations(days, currentCombination.length ? currentCombination + ', ' + days[index]
 		: currentCombination + days[index], index + 1, result);
-	week.length = 0;
-	week.push(...result);
+	// week.length = 0;
+	// week.push(...result);
+	return result;
 }
 
 function deleteinfoList(type) {

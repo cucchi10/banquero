@@ -52,9 +52,15 @@ async function getTiendas() {
 
 async function getWeek() {
 	if (!week.length) {
-		await generateCombinations(diasSemana);
+		const result = await generateCombinations(diasSemana);
+		week.push(...result);
 	}
-	return week;
+	return week.sort((a, b) => {
+		if (a.name === 'Todos los Dias') return -1;
+		if (b.name === 'Todos los Dias') return 1;
+		if (week.indexOf(a.name.split(',')[0].trim()) !== week.indexOf(b.name.split(',')[0].trim())) {return week.indexOf(a.name.split(',')[0].trim()) - week.indexOf(b.name.split(',')[0].trim());}
+		else {return (a.name.split(',').length - b.name.split(',').length);}
+	});
 }
 
 module.exports = {
