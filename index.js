@@ -31,8 +31,9 @@ const commandHandler =
 client.once('ready', async () => {
 	console.log('Ready!');
 	week.length = 0;
-	const result = await generateCombinations(diasSemana);
+	let result = await generateCombinations(diasSemana);
 	week.push(...result);
+	result = null;
 	await registerCommands();
 
 });

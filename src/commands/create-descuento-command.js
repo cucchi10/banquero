@@ -17,7 +17,7 @@ class CreateDiscountCommand extends Command {
 		}
 		const inputIsNumber = isNumber(input);
 		if (!inputIsNumber) {
-			const daysArray = input.split(',');
+			const daysArray = input.replace(/ y /g, ',').split(',');
 
 			const receivedDays = [];
 
@@ -26,14 +26,17 @@ class CreateDiscountCommand extends Command {
 					receivedDays.push(day.trim());
 				}
 			});
-			return receivedDays.sort((a, b) => {
+			const result = receivedDays.sort((a, b) => {
 				return diasSemana.indexOf(a) - diasSemana.indexOf(b);
 			}).join(', ');
+			if (!result) throw new Error('No se pudo encontrar ningun dia en tu mensaje');
+			return result;
 		}
 		else {
 			const inputExist = week[input];
 			if (!inputExist) throw new Error(`${inputExist}, no es una opción valida, seleccione una opción usando el autocomplete o escriba el o los dias de la semana, separados por coma`);
-			return inputExist.name === 'Todos los Dias' ? 'lunes, martes, miercoles, jueves, viernes, sabado, domingo' : inputExist.name;
+			const reuslt = inputExist.name === 'Todos los Dias' ? 'lunes, martes, miercoles, jueves, viernes, sabado, domingo' : inputExist.name;
+			return reuslt;
 		}
 	}
 

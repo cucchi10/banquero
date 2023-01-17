@@ -1,5 +1,5 @@
 const { Command } = require('./command');
-const { buildTable } = require('../utils/table');
+const { buildTable, buildTableDescuentos } = require('../utils/table');
 
 const { CategorieDAO } = require('../db/dao/categorie-dao');
 const { EntitysDAO } = require('../db/dao/entity-dao');
@@ -51,8 +51,19 @@ class ListTablesCommand extends Command {
 
 				if (!result || !result.length) throw new Error('No hay datos Que mostrar');
 
-				const table = buildTable(result);
-				await Command.reply(interaction, '```' + table + '```');
+				if (input === 'Tabla Descuentos') {
+					const tables = buildTableDescuentos(result);
+					await Command.reply(interaction, '**Lista de todos los descuentos: **');
+					tables.forEach((table) => {
+						interaction.channel.send(`\`\`\`${table}\`\`\``);
+					});
+				}
+				else {
+					const table = buildTable(result);
+					await Command.reply(interaction, `\`\`\`${table}\`\`\``);
+				}
+
+
 			}
 			catch (error) {
 				Command.reply(interaction, error.message);

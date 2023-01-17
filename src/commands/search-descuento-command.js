@@ -2,7 +2,7 @@ const { Command } = require('./command');
 const { isNumber } = require('../utils/number');
 const { diasSemana } = require('../datos');
 const { DescuentosDAO } = require('../db/dao/descuentos-dao');
-
+const { buildTableDescuentos } = require('../utils/table');
 class SearchDiscountCommand extends Command {
 	constructor(command) {
 		super(command);
@@ -26,7 +26,13 @@ class SearchDiscountCommand extends Command {
 				if (!descuentos || !descuentos.length) {
 					throw new Error('No hay descuentos');
 				}
-				await Command.reply(interaction, descuentos);
+
+				const tables = buildTableDescuentos(descuentos);
+				await Command.reply(interaction, '**Los descuentos encontrados son: **');
+				tables.forEach((table) => {
+					interaction.channel.send(`\`\`\`${table}\`\`\``);
+				});
+
 			}
 			catch (error) {
 				Command.reply(interaction, error.message);

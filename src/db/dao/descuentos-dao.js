@@ -3,6 +3,8 @@ const { CategorieDAO } = require('./categorie-dao');
 const { EntitysDAO } = require('./entity-dao');
 const { StoreDAO } = require('./store-dao');
 
+const { deleteinfoList } = require('../../datos');
+
 const getDescuentosCommander = `
 SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
 FROM general
@@ -155,9 +157,9 @@ VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
 `;
 
 const restoreDescuento = `
-INSERT INTO general
-(entidad,dia,rubro,tienda,descuento,tope_descuento,consumo_optimo,desde,hasta,detalle,dia_reintegro,link, deleted)
-VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, false)
+UPDATE general
+SET entidad=$1, dia=$2, rubro=$3, tienda=$4, descuento=$5, tope_descuento=$6, consumo_optimo=$7, desde=$8, hasta=$9, detalle=$10, dia_reintegro=$11, link=$12, deleted=false
+WHERE id = $13;
 `;
 
 class DescuentosDAO extends DAO {
@@ -248,10 +250,10 @@ class DescuentosDAO extends DAO {
 		return result;
 	}
 
-	async restoreDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
+	async restoreDescuento({ id, dia, desde, hasta, link, entidad, rubro, tienda, descuento,
 		tope_descuento, consumo_optimo, detalle, dia_reintegro }) {
 		const result = await this.query(restoreDescuento, [entidad, dia, rubro, tienda, descuento, tope_descuento,
-			consumo_optimo, desde, hasta, detalle, dia_reintegro, link]);
+			consumo_optimo, desde, hasta, detalle, dia_reintegro, link, id]);
 		return result;
 	}
 
@@ -362,14 +364,16 @@ class DescuentosDAO extends DAO {
 		if (!descuentoExist) throw new Error('Error al buscar el descuento para ver si esta repetido');
 		if (descuentoExist && descuentoExist.length && !descuentoExist[0].deleted) throw new Error(`El cupon ID **${descuentoExist[0].id}** ya existe`);
 		if (descuentoExist && descuentoExist.length && descuentoExist[0].deleted) {
-			const result = await this.restoreDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
+			const result = await this.restoreDescuento({ id:descuentoExist[0].id, dia, desde, hasta, link, entidad, rubro, tienda, descuento,
 				tope_descuento, consumo_optimo, detalle, dia_reintegro });
 			if (!result || !result.length) throw new Error('El descuento ya existe, pero no se puedo restaurar');
+			deleteinfoList('tabla_descuento');
 			return 'Se restauro con exito el descuento!';
 		}
 		const result = await this.createDescuento({ dia, desde, hasta, link, entidad, rubro, tienda, descuento,
 			tope_descuento, consumo_optimo, detalle, dia_reintegro });
 		if (!result) throw new Error('Error al crear el nuevo descuento');
+		deleteinfoList('tabla_descuento');
 		return 'Se creo con exito el descuento' ;
 	}
 
