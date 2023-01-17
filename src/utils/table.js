@@ -10,8 +10,8 @@ function buildTable(data) {
 
 	table.push(Object.keys(data[0]));
 	data.forEach(item => {
-		const value = Object.values(item) ? String(Object.values(item)).replace(/\b\w{30,}\b/g, word => word + '\n') : '';
-		table.push(value);
+		table.push(Object.values(item).map(x =>
+			x ? String(x).replace(/\b\w{30,}\b/g, word => word + '\n') : ''));
 	});
 
 	return table.toString();
