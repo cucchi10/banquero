@@ -63,7 +63,7 @@ function buildTableDescuentos(data) {
 }
 
 function handleEditDia(input) {
-	const daysArray = input.split(',');
+	const daysArray = input.split(',').map(day => day.trim());
 	let dias = '';
 	const firstDay = daysArray[0].trim();
 	const lastDay = daysArray[daysArray.length - 1].trim();

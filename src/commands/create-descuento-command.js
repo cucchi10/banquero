@@ -29,7 +29,7 @@ class CreateDiscountCommand extends Command {
 			const result = receivedDays.sort((a, b) => {
 				return diasSemana.indexOf(a) - diasSemana.indexOf(b);
 			}).join(', ');
-			if (!result) throw new Error('No se pudo encontrar ningun dia en tu mensaje');
+			if (!result || !result.length) throw new Error(`No se pudo encontrar ningun dia en tu mensaje, ${input}`);
 			return result;
 		}
 		else {
