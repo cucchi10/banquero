@@ -16,17 +16,20 @@ const infoList = {
 const week = [];
 
 async function generateCombinations(days, currentCombination = '', index = 0, result = []) {
-	if (index === days.length) {
-		result.push({ name: currentCombination.length ? currentCombination : 'Todos los Dias', value: (result.length).toString() });
-		return;
-	}
+	try {
+		if (index === days.length) {
+			result.push({ name: currentCombination.length ? currentCombination : 'Todos los Dias', value: (result.length).toString() });
+			return;
+		}
 
-	await generateCombinations(days, currentCombination, index + 1, result);
-	await generateCombinations(days, currentCombination.length ? currentCombination + ', ' + days[index]
-		: currentCombination + days[index], index + 1, result);
-	// week.length = 0;
-	// week.push(...result);
-	return result;
+		await generateCombinations(days, currentCombination, index + 1, result);
+		await generateCombinations(days, currentCombination.length ? currentCombination + ', ' + days[index]
+			: currentCombination + days[index], index + 1, result);
+		return result;
+	}
+	catch (error) {
+		throw new Error(error.messsage);
+	}
 }
 
 function deleteinfoList(type) {

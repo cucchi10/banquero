@@ -12,31 +12,36 @@ class CreateDiscountCommand extends Command {
 	}
 
 	async getDiasInput(input) {
-		if (!input) {
-			throw new Error('Debes enviar aunque sea un dia de la semana');
-		}
-		const inputIsNumber = isNumber(input);
-		if (!inputIsNumber) {
-			const daysArray = input.replace(/ y /g, ',').split(',');
+		try {
+			if (!input) {
+				throw new Error('Debes enviar aunque sea un dia de la semana');
+			}
+			const inputIsNumber = isNumber(input);
+			if (!inputIsNumber) {
+				const daysArray = input.replace(/ y /g, ',').split(',');
 
-			const receivedDays = [];
+				const receivedDays = [];
 
-			daysArray.forEach(day => {
-				if (diasSemana.includes(day.trim())) {
-					receivedDays.push(day.trim());
-				}
-			});
-			const result = receivedDays.sort((a, b) => {
-				return diasSemana.indexOf(a) - diasSemana.indexOf(b);
-			}).join(', ');
-			if (!result || !result.length) throw new Error(`No se pudo encontrar ningun dia en tu mensaje, ${input}`);
-			return result;
+				daysArray.forEach(day => {
+					if (diasSemana.includes(day.trim())) {
+						receivedDays.push(day.trim());
+					}
+				});
+				const result = receivedDays.sort((a, b) => {
+					return diasSemana.indexOf(a) - diasSemana.indexOf(b);
+				}).join(', ');
+				if (!result || !result.length) throw new Error(`No se pudo encontrar ningun dia en tu mensaje, ${input}`);
+				return result;
+			}
+			else {
+				const inputExist = week[input];
+				if (!inputExist) throw new Error(`${inputExist}, no es una opción valida, seleccione una opción usando el autocomplete o escriba el o los dias de la semana, separados por coma`);
+				const reuslt = inputExist.name === 'Todos los Dias' ? 'lunes, martes, miercoles, jueves, viernes, sabado, domingo' : inputExist.name;
+				return reuslt;
+			}
 		}
-		else {
-			const inputExist = week[input];
-			if (!inputExist) throw new Error(`${inputExist}, no es una opción valida, seleccione una opción usando el autocomplete o escriba el o los dias de la semana, separados por coma`);
-			const reuslt = inputExist.name === 'Todos los Dias' ? 'lunes, martes, miercoles, jueves, viernes, sabado, domingo' : inputExist.name;
-			return reuslt;
+		catch (error) {
+			throw new Error(error.messsage);
 		}
 	}
 
