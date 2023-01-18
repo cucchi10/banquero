@@ -1,4 +1,5 @@
 const Table = require('cli-table3');
+const { diasSemana } = require('../datos');
 
 function buildTable(data) {
 	const table = new Table({
@@ -11,7 +12,7 @@ function buildTable(data) {
 	table.push(Object.keys(data[0]));
 	data.forEach(item => {
 		table.push(Object.values(item).map(x =>
-			x ? String(x).replace(/\b\w{30,}\b/g, word => word + '\n') : ''));
+			x ? String(x).replace(/\b\w{35,}\b/g, word => word + '\n') : ''));
 	});
 
 	return table.toString();
@@ -41,16 +42,16 @@ function buildTableDescuentos(data) {
 
 		headers.forEach((header, i) => {
 			if (header === 'dia') {
-				values[i] = handleEditDia(values[i]);
+				values[i] = handleEditDay(values[i]);
 			}
 			else if (header === 'desde' || header === 'hasta') {
 				values[i] = values[i]?.toLocaleDateString('es-AR') || '';
 			}
 			else if (header === 'link') {
-				values[i] = values[i] ? String(values[i]).replace(/(.{30})/g, word => word + '\n') : '';
+				values[i] = values[i] ? String(values[i]).replace(/(.{35})/g, word => word + '\n') : '';
 			}
 			else {
-				values[i] = values[i] ? String(values[i]).replace(/\b\w{30,}\b/g, word => word + '\n') : '';
+				values[i] = values[i] ? String(values[i]).replace(/\b\w{35,}\b/g, word => word + '\n') : '';
 			}
 
 			table.push([header, values[i]]);
@@ -62,95 +63,83 @@ function buildTableDescuentos(data) {
 	return tables;
 }
 
-function handleEditDia(input) {
+function handleEditDay(input) {
 	const daysArray = input.split(',').map(day => day.trim());
 	let dias = '';
-	const firstDay = daysArray[0].trim();
-	const lastDay = daysArray[daysArray.length - 1].trim();
+	const firstDayIndex = diasSemana.indexOf(daysArray[0].trim());
+	const lastDayIndex = diasSemana.indexOf(daysArray[daysArray.length - 1].trim());
 	if (daysArray.length === 1) {
 		dias = daysArray[0];
 	}
 	else if (daysArray.length === 2) {
 		dias = daysArray.join(' y ');
 	}
-	else if (daysArray.length === 3) {
-		if (firstDay === 'lunes' && lastDay === 'miercoles' || firstDay === 'martes' && lastDay === 'jueves' ||
-    firstDay === 'miercoles' && lastDay === 'viernes' || firstDay === 'jueves' && lastDay === 'sabado' ||
-    firstDay === 'viernes' && lastDay === 'domingo') {
-			dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
-		}
-		else {
-			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
-		}
-
-	}
-	else if (daysArray.length === 4) {
-		if (firstDay === 'lunes' && lastDay === 'jueves' || firstDay === 'martes' && lastDay === 'viernes' ||
-    firstDay === 'miercoles' && lastDay === 'sabado' || firstDay === 'jueves' && lastDay === 'domingo') {
-			dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
-		}
-		else {
-			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
-		}
-
-	}
-	else if (daysArray.length === 5) {
-		if (firstDay === 'lunes' && lastDay === 'viernes' || firstDay === 'martes' && lastDay === 'sabado' ||
-    firstDay === 'miercoles' && lastDay === 'domingo') {
-			dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
-		}
-		else {
-			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
-		}
-	}
-	else if (daysArray.length === 6) {
-
-		if (firstDay === 'lunes' && lastDay === 'sabado') {
-			dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
-		}
-		else if (firstDay === 'martes' && lastDay === 'domingo') {
-			dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
-		}
-		else {
-			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
-		}
-	}
-	else if (daysArray.length === 7) {
+	else if (lastDayIndex - firstDayIndex === daysArray.length - 1) {
 		dias = `${daysArray[0]} a ${daysArray[daysArray.length - 1]}`;
 	}
-
+	else {
+		dias = `${daysArray.slice(0, -1).join(', ')} y ${daysArray[daysArray.length - 1]}`;
+	}
 	return dias;
 }
 
-
-// function handleEditDia(input) {
-// 	const daysArray = input.split(',');
+// function handleEditDay(input) {
+// 	const daysArray = input.split(',').map(day => day.trim());
 // 	let dias = '';
-// 	daysArray.forEach((dia, index) => {
-// 		const diatrim = dia.trim();
-// 		if (index === 0) {
-// 			dias += diatrim;
+// 	const firstDay = daysArray[0].trim();
+// 	const lastDay = daysArray[daysArray.length - 1].trim();
+// 	if (daysArray.length === 1) {
+// 		dias = daysArray[0];
+// 	}
+// 	else if (daysArray.length === 2) {
+// 		dias = daysArray.join(' y ');
+// 	}
+// 	else if (daysArray.length === 3) {
+// 		if (firstDay === 'lunes' && lastDay === 'miercoles' || firstDay === 'martes' && lastDay === 'jueves' ||
+//     firstDay === 'miercoles' && lastDay === 'viernes' || firstDay === 'jueves' && lastDay === 'sabado' ||
+//     firstDay === 'viernes' && lastDay === 'domingo') {
+// 			dias = `${firstDay} a ${lastDay}`;
 // 		}
-// 		else if (index === daysArray.length - 1) {
-// 			if (daysArray.length > 2) {
-// 				dias += ` a ${diatrim}`;
-// 			}
-// 			else {
-// 				dias += ` y ${diatrim}`;
-// 			}
+// 		else {
+// 			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
 // 		}
-// 		else if (diatrim === 'lunes' && daysArray[index + 1] === 'domingo') {
-// 			dias += ` a ${diatrim}`;
+
+// 	}
+// 	else if (daysArray.length === 4) {
+// 		if (firstDay === 'lunes' && lastDay === 'jueves' || firstDay === 'martes' && lastDay === 'viernes' ||
+//     firstDay === 'miercoles' && lastDay === 'sabado' || firstDay === 'jueves' && lastDay === 'domingo') {
+// 			dias = `${firstDay} a ${lastDay}`;
 // 		}
-// 		else if (diatrim === 'lunes' && daysArray[index + 1] !== 'domingo') {
-// 			dias += `, ${diatrim}`;
+// 		else {
+// 			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
 // 		}
-// 		else if (diatrim === 'domingo' && daysArray[index - 1] !== 'lunes') {
-// 			dias += `, ${diatrim}`;
+
+// 	}
+// 	else if (daysArray.length === 5) {
+// 		if (firstDay === 'lunes' && lastDay === 'viernes' || firstDay === 'martes' && lastDay === 'sabado' ||
+//     firstDay === 'miercoles' && lastDay === 'domingo') {
+// 			dias = `${firstDay} a ${lastDay}`;
 // 		}
-// 	});
+// 		else {
+// 			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
+// 		}
+// 	}
+// 	else if (daysArray.length === 6) {
+
+// 		if (firstDay === 'lunes' && lastDay === 'sabado' || firstDay === 'martes' && lastDay === 'domingo') {
+// 			dias = `${firstDay} a ${lastDay}`;
+// 		}
+// 		else {
+// 			dias = `${daysArray.slice(0, -1).join(', ')} y ${lastDay}`;
+// 		}
+// 	}
+// 	else if (daysArray.length === 7) {
+// 		dias = `${firstDay} a ${lastDay}`;
+// 	}
+
 // 	return dias;
 // }
+
 
 module.exports = {
 	buildTable,

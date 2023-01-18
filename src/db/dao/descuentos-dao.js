@@ -6,7 +6,8 @@ const { StoreDAO } = require('./store-dao');
 const { deleteinfoList } = require('../../datos');
 
 const getDescuentosCommander = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -15,7 +16,8 @@ WHERE general.deleted = false;
 `;
 
 const getDescuentos = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -24,7 +26,8 @@ WHERE general.deleted = false;
 `;
 
 const getDescuentosConDia = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -34,7 +37,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosConEntidad = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -45,7 +49,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosWithTiendaANDEntidad = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN tienda ON general.tienda = tienda.id
@@ -56,7 +61,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosWithTienda = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link 
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN tienda ON general.tienda = tienda.id
@@ -66,7 +72,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosWithRubro = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -76,7 +83,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosWithRubroANDTiendaANDEtidad = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -99,7 +107,8 @@ AND descuento = $5;
 `;
 
 const getDescuentosWithRubroANDTienda = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id
@@ -111,7 +120,8 @@ AND general.deleted = false;
 `;
 
 const getDescuentosConEntidadYRubro = `
-SELECT general.entidad, general.dia, general.rubro, general.tienda, general.descuento, general.tope_descuento, general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link, entidad.name as entidad_name, rubro.name as rubro_name, tienda.name as tienda_name 
+SELECT general.id, general.dia, entidad.name AS Entidad, rubro.name as Rubro, tienda.name as Tienda, general.descuento, general.tope_descuento, 
+general.consumo_optimo, general.desde, general.hasta, general.detalle, general.dia_reintegro, general.link
 FROM general
 JOIN entidad ON general.entidad = entidad.id
 JOIN rubro ON general.rubro = rubro.id

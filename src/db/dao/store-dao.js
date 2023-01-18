@@ -8,7 +8,7 @@ ORDER BY name ASC;
 `;
 
 const getStores = `
-SELECT id, name AS Nombre 
+SELECT id, name AS Tienda 
 FROM tienda 
 WHERE deleted = false
 ORDER BY name ASC;

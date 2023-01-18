@@ -18,8 +18,8 @@ CREATE TABLE tienda(
 
 CREATE TABLE general(
   id serial primary key not null,
-  entidad integer references entidad(id) not null,
   dia varchar not null,
+  entidad integer references entidad(id) not null,
   rubro integer references rubro(id) not null,
   tienda integer references tienda(id) not null,
   descuento varchar not null,
@@ -34,95 +34,70 @@ CREATE TABLE general(
 );
 -- Inserta filas en la tabla entidad
 INSERT INTO entidad (name) VALUES
-  ('Santander Rio'),
+  ('Sin entidad')
+  ('Banco Bica'),
+  ('Banco Cuidad'),
   ('Banco Nacion'),
   ('Banco Provincia'),
-  ('Banco Cuidad'),
-  ('SuperVielle'),
-  ('Personal Pay'),
   ('BBVA'),
-  ('Galicia'),
-  ('Banco Bica'),
-  ('Patagonia'),
   ('Brubank'),
-  ('Macro'),
-  ('ICBC'),
-  ('HSBC'),
-  ('Itaú'),
+  ('Clarin 365'),
   ('Cuenta DNI'),
+  ('Galicia'),
+  ('HSBC'),
+  ('ICBC'),
+  ('Itaú'),
+  ('Macro'),
   ('MODO'),
+  ('Patagonia'),
+  ('Personal Pay'),
+  ('Santander Rio'),
+  ('SuperVielle'),
   ('YPF APP'),
-  ('Yoy'),
-  ('Clarin 365');
+  ('Yoy');
 
 -- Inserta filas en la tabla rubro
 INSERT INTO rubro (name) VALUES
-  ('Supermercados'),
+  ('Sin rubro')
+  ('Bares'),
   ('Combustibles'),
+  ('Farmacia'),
+  ('Gastronomia'),
+  ('Indumentaria'),
+  ('Librerías'),
+  ('Perfumeria'),
   ('Pedidos Ya'),
   ('Rappi'),
-  ('Gastronomia'),
-  ('Transporte'),
-  ('Farmacia'),
-  ('Perfumeria'),
-  ('Bares'),
-  ('Librerías'),
-  ('Indumentaria');
+  ('Supermercados'),
+  ('Transporte');
 
 
 -- Inserta filas en la tabla tienda
 INSERT INTO tienda (name) VALUES
-  ('Dia'),
-  ('Carrefour'),
+  ('Sin tienda')
+  ('Arco Iris'),
   ('Axion'),
-  ('Jumbo'),
-  ('Disco'),
-  ('Vea'),
   ('Cabify'),
+  ('Carrefour'),
+  ('Chango Mas'),
   ('Coto'),
   ('Coto Digital'),
-  ('Toledo'),
-  ('Puma'),
-  ('Yaguar'),
-  ('La Gallega'),
+  ('Dia'),
+  ('Disco'),
   ('Eco'),
-  ('Chango Mas'),
-  ('YPF'),
-  ('La Anónima'),
-  ('Puppis'),
-  ('Freddo'),
   ('El Puente'),
-  ('Pedidos Ya'),
-  ('Libertad'),
+  ('Freddo'),
+  ('Jumbo'),
+  ('La Anónima'),
+  ('La Gallega'),
   ('La Reina'),
+  ('Libertad'),
+  ('Peddios Ya'),
+  ('Pedidos Ya'),
+  ('Puppis'),
+  ('Puma'),
+  ('Toledo'),
   ('Unico'),
-  ('la Bomba'),
-  ('Arco Iris');
-
--- CREATE TABLE dia(
---   id serial primary key not null,
---   name varchar not null,
---   deleted bool not null default false
--- );
-
--- -- Inserta filas en la tabla dia
--- INSERT INTO dia (name) VALUES
---   ('lunes'),
---   ('martes'),
---   ('miércoles'),
---   ('jueves'),
---   ('viernes'),
---   ('sábado'),
---   ('domingo');
-
--- -- Usa una consulta recursiva para obtener todas las combinaciones de días de la semana
--- WITH RECURSIVE cte AS (
---   SELECT id, name, ARRAY[id] AS ids
---   FROM dia
---   UNION ALL
---   SELECT d.id, c.name || ', ' || d.name, ids || d.id
---   FROM cte c
---   JOIN dia d ON d.id NOT IN c.ids
--- )
--- SELECT name FROM cte ORDER BY name;
-
+  ('Vea'),
+  ('Yaguar'),
+  ('YPF');

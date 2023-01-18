@@ -8,7 +8,7 @@ ORDER BY name ASC;
 `;
 
 const getCategories = `
-SELECT id, name AS Nombre 
+SELECT id, name AS Rubro 
 FROM rubro 
 WHERE deleted = false
 ORDER BY name ASC;
